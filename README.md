@@ -3,7 +3,7 @@ The No Excuse Debt Eliminator is the companion tool for readers of the No Excuse
 
 📌 Live Website
 
-https://LIGHTWATERINDUSTRIES-cloud.github.io/no-excuse-calculator
+https://lightwaterindustries-cloud.github.io/no-excuse-calculator
 
 
 📄 Project Structure
