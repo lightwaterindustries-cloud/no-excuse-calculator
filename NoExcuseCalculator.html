@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Excuse Debt Elimination Calculator – Premium Edition</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* GLOBAL MOBILE FIXES */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* MAIN THEME */
+:root{
+    --royal:#1E3A8A;
+    --sky:#3B82F6;
+    --soft-blue:#EEF2FF;
+    --light-gray:#F3F4F6;
+    --text:#111827;
+    --danger:#EF4444;
+    --emerald:#047857;
+    --mint:#10B981;
+    --soft-green:#D1FAE5;
+}
+*{box-sizing:border-box;}
+body{
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:linear-gradient(135deg,var(--soft-blue),var(--light-gray));
+    padding:20px;
+    color:var(--text);
+}
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    background:#ffffff;
+    padding:28px;
+    border-radius:18px;
+    box-shadow:0 20px 40px rgba(30,58,138,0.18);
+    border:1px solid #E5E7EB;
+}
+
+/* HEADER */
+.header-band{
+    background:linear-gradient(135deg,var(--royal),var(--sky));
+    color:#ffffff;
+    padding:20px 22px;
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:22px;
+}
+.header-band h1{
+    margin:0;
+    font-size:26px;
+    letter-spacing:0.03em;
+}
+.badge-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:8px;
+}
+.badge{
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+}
+
+/* EXPLAINER + ONBOARDING */
+.explainer{
+    margin-bottom:22px;
+}
+
+/* STATUS HEADER */
+.status-header{
+    background:var(--soft-green);
+    border-radius:14px;
+    padding:16px 18px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    margin-bottom:12px;
+    border:1px solid #A7F3D0;
+}
+.status-header h3{
+    margin:0;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:#047857;
+}
+.status-header h2{
+    margin:4px 0;
+    font-size:26px;
+    color:#064E3B;
+}
+.status-header p{
+    margin:0;
+    font-size:13px;
+    color:#065F46;
+}
+
+/* HALFWAY CARD */
+.halfway-card{
+    margin-bottom:18px;
+    border-radius:14px;
+    padding:14px 16px;
+    background:linear-gradient(135deg,#ECFDF5,#EEF2FF);
+    border:1px solid #D1FAE5;
+}
+.halfway-card h3{
+    margin:0 0 6px;
+    font-size:14px;
+    color:#065F46;
+}
+.halfway-card p{
+    margin:0;
+    font-size:13px;
+    color:#374151;
+}
+
+/* TOOLBAR */
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:18px;
+}
+button{
+    padding:9px 12px;
+    border:none;
+    border-radius:999px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--sky);
+    color:#ffffff;
+    box-shadow:0 8px 18px rgba(59,130,246,0.18);
+}
+button.secondary{
+    background:#ffffff;
+    color:var(--royal);
+    border:1px solid #D1D5DB;
+}
+button.danger{
+    background:var(--danger);
+}
+
+/* MAIN LAYOUT */
+.main-layout{
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+    width:100%;
+}
+.left-side,.right-side{
+    flex:1 1 320px;
+    background:#F9FAFB;
+    padding:18px 18px;
+    border-radius:14px;
+    border:1px solid #E5E7EB;
+}
+.left-side h2,.right-side h2{
+    margin-top:0;
+    font-size:17px;
+    color:#111827;
+}
+
+/* INPUTS */
+label{
+    font-size:12px;
+    font-weight:600;
+    color:#4B5563;
+    display:block;
+    margin-top:8px;
+    margin-bottom:2px;
+}
+input,select{
+    width:100%;
+    padding:9px 10px;
+    margin:4px 0 8px;
+    border:1px solid #D1D5DB;
+    border-radius:999px;
+    font-size:13px;
+    background:#ffffff;
+}
+.primary-btn{
+    width:100%;
+    justify-content:center;
+    margin-top:10px;
+}
+
+/* INVENTORY */
+.inventory-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+}
+.inventory-header p{
+    margin:0;
+    font-size:11px;
+    color:#6B7280;
+}
+.debt-row{
+    background:#ffffff;
+    padding:10px 12px;
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    margin-bottom:8px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+.debt-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+}
+.debt-title{
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+}
+.debt-meta{
+    font-size:11px;
+    color:#4B5563;
+}
+.category-pill{
+    display:inline-block;
+    font-size:10px;
+    padding:3px 8px;
+    border-radius:999px;
+    background:#ECFDF5;
+    color:#047857;
+    border:1px solid #A7F3D0;
+    margin-top:4px;
+}
+
+/* PROGRESS BAR */
+.progress-bar{
+    height:6px;
+    border-radius:999px;
+    background:#E5E7EB;
+    overflow:hidden;
+}
+.progress-fill{
+    height:100%;
+    background:var(--mint);
+    width:0%;
+}
+
+/* NET INCOME + HOUSEHOLD CARD */
+.net-income-card{
+    margin-top:12px;
+    background:#ffffff;
+    border-radius:14px;
+    border:1px solid #E5E7EB;
+    padding:14px 16px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+.net-income-card h3{
+    margin:0 0 8px;
+    font-size:14px;
+    color:#111827;
+}
+.net-income-card p{
+    margin:4px 0;
+    font-size:12px;
+    color:#4B5563;
+}
+#incomeChartContainer{
+    margin-top:10px;
+}
+#incomeChart{
+    max-width:100% !important;
+    height:auto !important;
+}
+
+/* DTI GAUGE + MOMENTUM + TROPHY + FUTURE YOU */
+.dashboard-metrics{
+    margin-top:14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.metric-card{
+    background:#ffffff;
+    border-radius:14px;
+    border:1px solid #E5E7EB;
+    padding:12px 14px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.03);
+    font-size:12px;
+    color:#374151;
+}
+.metric-card h4{
+    margin:0 0 6px;
+    font-size:13px;
+    color:#111827;
+}
+
+/* Simple gauge */
+.gauge-container{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.gauge-ring{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:6px solid #E5E7EB;
+    position:relative;
+}
+.gauge-fill{
+    position:absolute;
+    top:0;
+    left:0;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:6px solid #10B981;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%);
+    transform-origin:center;
+    transform:rotate(0deg);
+}
+.gauge-center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:11px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* Momentum bar */
+.momentum-bar{
+    width:100%;
+    height:8px;
+    border-radius:999px;
+    background:#E5E7EB;
+    overflow:hidden;
+    margin-top:6px;
+}
+.momentum-fill{
+    height:100%;
+    background:linear-gradient(90deg,#3B82F6,#10B981);
+    width:0%;
+}
+
+/* Future You */
+.future-text{
+    font-size:12px;
+    color:#374151;
+}
+
+/* LEDGER + CHARTS + TIMELINE */
+.section-block{
+    margin-top:22px;
+    border-top:1px solid #E5E7EB;
+    padding-top:16px;
+}
+.section-block h2{
+    margin-top:0;
+    font-size:17px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    font-size:12px;
+}
+th,td{
+    padding:8px;
+    text-align:left;
+    border-bottom:1px solid #E5E7EB;
+    white-space:nowrap;
+}
+th{
+    background:#F3F4F6;
+    font-weight:600;
+    color:#374151;
+}
+#ledgerContainer{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+/* CHARTS */
+#chartContainer{
+    margin-top:18px;
+    height:320px;
+    background:#F9FAFB;
+    border-radius:14px;
+    border:1px solid #E5E7EB;
+    padding:12px;
+    max-width:100%;
+}
+#chartContainer h3{
+    margin:0 0 8px;
+    font-size:14px;
+}
+canvas{
+    max-width:100% !important;
+    height:auto !important;
+}
+
+/* Timeline */
+.timeline{
+    margin-top:16px;
+    padding:10px 12px;
+    border-radius:12px;
+    background:#F3F4F6;
+    font-size:12px;
+    color:#374151;
+}
+.timeline-line{
+    height:2px;
+    background:#D1D5DB;
+    margin:8px 0;
+    position:relative;
+}
+.timeline-point{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#3B82F6;
+    position:absolute;
+    top:-4px;
+}
+.timeline-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:#4B5563;
+}
+
+/* MOBILE BREAKPOINT */
+@media(max-width:768px){
+    .container{
+        padding:16px;
+        border-radius:12px;
+    }
+    .header-band h1{
+        font-size:20px;
+        text-align:center;
+    }
+    .toolbar{
+        flex-direction:column;
+        gap:8px;
+    }
+    .toolbar button{
+        width:100%;
+        font-size:14px;
+        padding:12px;
+    }
+    .main-layout{
+        flex-direction:column;
+        gap:16px;
+        width:100%;
+    }
+    .left-side,.right-side{
+        padding:14px;
+        border-radius:12px;
+    }
+    input,select{
+        font-size:15px;
+        padding:12px;
+    }
+    #chartContainer{
+        height:260px;
+        padding:10px;
+    }
+    .debt-row{
+        padding:12px;
+        border-radius:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="dashboard">
+
+<!-- HEADER -->
+<div class="header-band">
+    <h1>No Excuse Debt Elimination Calculator</h1>
+    <div class="badge-row">
+        <span class="badge">No Excuse Method</span>
+        <span class="badge">Growing Margin Snowball</span>
+        <span class="badge">Visual Payoff Timeline</span>
+        <span class="badge">Exportable Ledger</span>
+    </div>
+</div>
+
+<!-- START HERE ONBOARDING -->
+<div id="onboardingCard" style="
+    background:#ffffff;
+    border:1px solid #E5E7EB;
+    border-radius:18px;
+    padding:22px 24px;
+    margin-bottom:26px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+">
+    <h2 style="margin:0 0 12px; font-size:22px; color:#111827; font-weight:600;">
+        Start Here
+    </h2>
+
+    <p style="font-size:15px; color:#374151; margin-bottom:18px; line-height:1.55;">
+        Welcome to the <strong>No Excuse Debt Eliminator</strong>.  
+        Follow these quick steps to get your personalized payoff timeline.
+    </p>
+
+    <ul style="list-style:none; padding-left:0; margin:0;">
+        <li style="margin-bottom:14px; font-size:15px; color:#111827;">
+            🍏 <strong>Step 1:</strong> Enter your monthly extra margin.
+        </li>
+        <li style="margin-bottom:14px; font-size:15px; color:#111827;">
+            🍏 <strong>Step 2:</strong> Add each debt with balance, minimum payment, and APR.
+        </li>
+        <li style="margin-bottom:14px; font-size:15px; color:#111827;">
+            🍏 <strong>Step 3:</strong> View your freedom date, payoff chart, and downloadable ledger.
+        </li>
+    </ul>
+
+    <button id="dismissOnboarding" style="
+        margin-top:20px;
+        background:#1E3A8A;
+        color:white;
+        border:none;
+        padding:12px 16px;
+        border-radius:12px;
+        font-size:15px;
+        font-weight:600;
+        width:100%;
+        text-align:center;
+        box-shadow:0 4px 12px rgba(30,58,138,0.25);
+    ">
+        Got it
+    </button>
+</div>
+
+<!-- EXPLAINER -->
+<div class="explainer">
+    <h2>How the No Excuse Method Works</h2>
+
+    <button id="infoToggle" style="
+        background:#1E3A8A;
+        color:white;
+        border:none;
+        padding:10px 14px;
+        border-radius:10px;
+        font-size:14px;
+        font-weight:600;
+        margin-bottom:12px;
+        width:100%;
+        text-align:center;
+    ">
+        More Info ▼
+    </button>
+
+    <div id="infoContent" style="
+        background:#F3F4FF;
+        border:1px solid #E0E3FF;
+        border-radius:12px;
+        padding:16px 18px;
+        display:block;
+    ">
+        <p>
+            The <strong>No Excuse Debt Elimination Method</strong> is a more aggressive version of the traditional
+            debt snowball. Instead of keeping your extra payment fixed, your margin
+            <strong>grows automatically</strong> every time you eliminate a debt.
+        </p>
+
+        <ul style="list-style:none; padding-left:0; margin-top:14px;">
+            <li style="margin-bottom:10px;">🔹 Pay the <strong>minimum payment</strong> on every debt.</li>
+            <li style="margin-bottom:10px;">🔹 Apply your extra margin to the <strong>smallest active debt</strong>.</li>
+            <li style="margin-bottom:10px;">🔹 When that debt is paid off, its <strong>minimum payment + your margin</strong> roll forward to the next debt.</li>
+            <li style="margin-bottom:10px;">🔹 Your margin grows larger with every debt you eliminate—creating unstoppable momentum.</li>
+        </ul>
+
+        <p style="margin-top:14px;">
+            Use this calculator to see your exact payoff timeline, track progress visually,
+            export your ledger to a CSV report, and stay consistent.
+            <strong>No excuses. No delays. Just results.</strong>
+            Get ready to live a debt‑free lifestyle!
+        </p>
+    </div>
+</div>
+
+<!-- STATUS HEADER -->
+<div class="status-header">
+    <h3>Estimated Freedom Date</h3>
+    <h2 id="dateOut">Add debts to calculate...</h2>
+    <p id="countOut"></p>
+</div>
+
+<!-- HALFWAY POINT CARD -->
+<div class="halfway-card" id="halfwayCard" style="display:none;">
+    <h3>⭐ Your Halfway Point</h3>
+    <p id="halfwayText">Once you add debts, we’ll show when you’re halfway to debt freedom.</p>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+    <button onclick="toggleProgressBars()">Progress Bars</button>
+    <button onclick="toggleChart()">Payoff Chart</button>
+    <button onclick="toggleLedger()">Show / Hide Ledger</button>
+    <button onclick="downloadCSV()" class="secondary">Download Ledger CSV</button>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+    <div class="left-side">
+        <h2>Extra Cash Margin</h2>
+        <label for="margin">Monthly Extra Margin ($)</label>
+        <input type="number" id="margin" value="200" oninput="runEngine()">
+
+        <h2 style="margin-top:18px;">Add Debt Item</h2>
+        <label for="name">Debt Name</label>
+        <input type="text" id="name">
+
+        <label for="category">Debt Category</label>
+        <select id="category">
+            <option value="Credit Card">Credit Card</option>
+            <option value="Auto Loan">Auto Loan</option>
+            <option value="Student Loan">Student Loan</option>
+            <option value="Mortgage">Mortgage</option>
+            <option value="Personal Loan">Personal Loan</option>
+            <option value="Medical Debt">Medical Debt</option>
+            <option value="Line of Credit">Line of Credit</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="bal">Current Balance ($)</label>
+        <input type="number" id="bal">
+
+        <label for="min">Minimum Monthly Payment ($)</label>
+        <input type="number" id="min">
+
+        <label for="apr">Annual Interest Rate (APR %)</label>
+        <input type="number" id="apr">
+
+        <label for="type">Debt Type</label>
+        <select id="type">
+            <option value="revolving">Revolving</option>
+            <option value="installment">Installment</option>
+        </select>
+
+        <button class="primary-btn" onclick="addDebt()">Add Debt to Snowball</button>
+    </div>
+
+    <div class="right-side">
+        <div class="inventory-header">
+            <h2>Current Debt Inventory</h2>
+            <p>Sorted based on your chosen options.</p>
+        </div>
+        <div id="inventoryOut">
+            <p style="color:#6B7280;text-align:center;padding:20px;">No debts added yet.</p>
+        </div>
+
+        <!-- FINANCIAL HEALTH DASHBOARD -->
+        <div class="net-income-card">
+            <h3>Income vs Household & Debt Snapshot</h3>
+
+            <label for="netIncome">Net Monthly Income ($)</label>
+            <input type="number" id="netIncome" value="" oninput="updateIncomeCard()">
+
+            <label for="foodExp">Food / Groceries ($)</label>
+            <input type="number" id="foodExp" value="" oninput="updateIncomeCard()">
+
+            <label for="utilExp">Utilities ($)</label>
+            <input type="number" id="utilExp" value="" oninput="updateIncomeCard()">
+
+            <label for="memberExp">Memberships ($)</label>
+            <input type="number" id="memberExp" value="" oninput="updateIncomeCard()">
+
+            <label for="insExp">Insurance (Auto / Life) ($)</label>
+            <input type="number" id="insExp" value="" oninput="updateIncomeCard()">
+
+            <label for="subsExp">Subscriptions (Netflix, Hulu, Amazon, etc.) ($)</label>
+            <input type="number" id="subsExp" value="" oninput="updateIncomeCard()">
+
+            <label for="otherExp">Other Household Expenses ($)</label>
+            <input type="number" id="otherExp" value="" oninput="updateIncomeCard()">
+
+            <p id="incomeSummary">Enter your income and household expenses to see your financial picture.</p>
+
+            <div id="incomeChartContainer">
+                <canvas id="incomeChart"></canvas>
+            </div>
+
+            <!-- Metrics: DTI, Momentum, Trophy, Future You -->
+            <div class="dashboard-metrics">
+                <div class="metric-card">
+                    <h4>Debt-to-Income Gauge</h4>
+                    <div class="gauge-container">
+                        <div class="gauge-ring">
+                            <div class="gauge-fill" id="dtiGaugeFill"></div>
+                            <div class="gauge-center" id="dtiGaugeCenter">DTI</div>
+                        </div>
+                        <div>
+                            <p id="dtiText">DTI will appear once income and debts are entered.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Margin Momentum</h4>
+                    <p id="momentumText">Your margin growth will appear as you add debts and run the snowball.</p>
+                    <div class="momentum-bar">
+                        <div class="momentum-fill" id="momentumFill"></div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Debts Eliminated Trophy</h4>
+                    <p id="trophyText">🏆 No debts eliminated yet. Once you start, this will track your wins.</p>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Future You Projection</h4>
+                    <p class="future-text" id="futureText">
+                        As you add debts and run the calculator, we’ll show when you’re debt-free and how much margin you’ll have.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LEDGER + CHARTS + TIMELINE -->
+<div class="section-block">
+    <h2>Month‑by‑Month Snowball Ledger</h2>
+    <div id="ledgerContainer">
+        <table>
+            <thead>
+                <tr id="thOut">
+                    <th>Month</th>
+                    <th>Active Debt</th>
+                    <th>Margin</th>
+                    <th>Payment</th>
+                    <th>Total Payment</th>
+                    <th>Total Remaining</th>
+                </tr>
+            </thead>
+            <tbody id="tbOut">
+                <tr><td colspan="6" style="text-align:center;color:#6B7280;">Awaiting variables...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="chartContainer">
+        <h3>Total Debt Remaining Over Time</h3>
+        <canvas id="payoffChart"></canvas>
+    </div>
+
+    <div class="timeline" id="journeyTimeline">
+        <h3 style="margin:0 0 6px;font-size:14px;color:#111827;">Your Journey Timeline</h3>
+        <div class="timeline-line">
+            <div class="timeline-point" id="tlStart" style="left:0%;"></div>
+            <div class="timeline-point" id="tlFirst" style="left:33%;"></div>
+            <div class="timeline-point" id="tlHalf" style="left:66%;"></div>
+            <div class="timeline-point" id="tlEnd" style="left:100%;"></div>
+        </div>
+        <div class="timeline-labels">
+            <span id="tlStartLabel">Start</span>
+            <span id="tlFirstLabel">First Debt Paid</span>
+            <span id="tlHalfLabel">Halfway</span>
+            <span id="tlEndLabel">Debt-Free</span>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+/* Onboarding dismiss */
+document.getElementById("dismissOnboarding").addEventListener("click", function() {
+    const card = document.getElementById("onboardingCard");
+    card.style.display = "none";
+});
+
+/* Explainer toggle */
+document.getElementById("infoToggle").addEventListener("click", function() {
+    const box = document.getElementById("infoContent");
+    const isOpen = box.style.display !== "none";
+    box.style.display = isOpen ? "none" : "block";
+    this.innerText = isOpen ? "More Info ▼" : "Hide Info ▲";
+});
+
+/* Snowball engine */
+let debts = [];
+const mNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let showProgress = false;
+let showChartFlag = true;
+let ledgerVisible = true;
+let payoffChart = null;
+let chartDataPoints = [];
+let ledgerRows = [];
+let incomeChart = null;
+let initialTotalDebt = 0;
+let halfwayInfo = null;
+let firstPaidInfo = null;
+let finalInfo = null;
+let maxMarginSeen = 0;
+
+function addDebt(){
+    const n = document.getElementById("name");
+    const c = document.getElementById("category");
+    const b = document.getElementById("bal");
+    const m = document.getElementById("min");
+    const a = document.getElementById("apr");
+    const t = document.getElementById("type");
+
+    if(!n.value.trim() || !b.value || !m.value || !a.value){
+        alert("Please fill out all required fields.");
+        return;
+    }
+
+    debts.push({
+        id: Date.now(),
+        name: n.value.trim(),
+        category: c.value,
+        balance: parseFloat(b.value),
+        originalBalance: parseFloat(b.value),
+        min: parseFloat(m.value),
+        apr: parseFloat(a.value),
+        type: t.value
+    });
+
+    n.value = "";
+    b.value = "";
+    m.value = "";
+    a.value = "";
+    c.value = "Credit Card";
+    t.value = "revolving";
+
+    runEngine();
+}
+
+function removeDebt(id){
+    debts = debts.filter(d => d.id !== id);
+    runEngine();
+}
+
+function toggleProgressBars(){
+    showProgress = !showProgress;
+    runEngine();
+}
+
+function toggleChart(){
+    showChartFlag = !showChartFlag;
+    document.getElementById("chartContainer").style.display = showChartFlag ? "block" : "none";
+    if(showChartFlag) {
+        renderChart();
+    }
+}
+
+function toggleLedger(){
+    ledgerVisible = !ledgerVisible;
+    document.getElementById("ledgerContainer").style.display = ledgerVisible ? "block" : "none";
+}
+
+function runEngine(){
+    if(debts.length === 0){
+        document.getElementById("inventoryOut").innerHTML =
+            "<p style='color:#6B7280;text-align:center;padding:20px;'>No debts added yet.</p>";
+        document.getElementById("dateOut").innerText = "Add debts to calculate...";
+        document.getElementById("countOut").innerText = "";
+        document.getElementById("tbOut").innerHTML =
+            "<tr><td colspan='6' style='text-align:center;color:#6B7280;'>Awaiting variables...</td></tr>";
+        chartDataPoints = [];
+        ledgerRows = [];
+        halfwayInfo = null;
+        firstPaidInfo = null;
+        finalInfo = null;
+        maxMarginSeen = 0;
+        document.getElementById("halfwayCard").style.display = "none";
+        if(payoffChart) payoffChart.destroy();
+        updateIncomeCard();
+        updateJourneyTimeline();
+        updateMomentumMeter();
+        updateTrophy();
+        updateFutureYou();
+        return;
+    }
+
+    renderInventory();
+    calculateProjections();
+    updateIncomeCard();
+    updateJourneyTimeline();
+    updateMomentumMeter();
+    updateTrophy();
+    updateFutureYou();
+}
+
+function renderInventory(){
+    const displayZone = document.getElementById("inventoryOut");
+    displayZone.innerHTML = "";
+
+    debts.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "debt-row";
+
+        const top = document.createElement("div");
+        top.className = "debt-top";
+
+        const textDiv = document.createElement("div");
+        const isPaid = d.balance <= 0;
+
+        textDiv.innerHTML =
+            "<div class='debt-title'>" + d.name + "</div>" +
+            "<div class='debt-meta'>" +
+            (isPaid
+                ? "<span style='color:#10B981;font-weight:bold;'>PAID</span>"
+                : "Balance: $" + d.balance.toFixed(2) +
+                  " | Min: $" + d.min.toFixed(2) +
+                  " | APR: " + d.apr.toFixed(2) + "% " +
+                  " | Type: " + (d.type === 'revolving' ? 'Revolving' : 'Installment')
+            ) +
+            "</div>" +
+            "<span class='category-pill'>" + d.category + "</span>";
+
+        const delBtn = document.createElement("button");
+        delBtn.innerText = "Remove";
+        delBtn.className = "danger";
+        delBtn.style.fontSize = "11px";
+        delBtn.onclick = () => removeDebt(d.id);
+
+        top.appendChild(textDiv);
+        top.appendChild(delBtn);
+        card.appendChild(top);
+
+        if(showProgress && !isPaid){
+            const bar = document.createElement("div");
+            bar.className = "progress-bar";
+            const fill = document.createElement("div");
+            fill.className = "progress-fill";
+
+            let pct = ((d.originalBalance - d.balance) / d.originalBalance) * 100;
+            if(pct < 0) pct = 0;
+            if(pct > 100) pct = 100;
+
+            fill.style.width = pct.toFixed(1) + "%";
+            bar.appendChild(fill);
+            card.appendChild(bar);
+        }
+
+        displayZone.appendChild(card);
+    });
+}
+
+function calculateProjections(){
+    const sim = debts.map(d => ({
+        name: d.name,
+        min: d.min,
+        apr: d.apr,
+        bal: d.balance,
+        type: d.type
+    }));
+
+    initialTotalDebt = sim.reduce((sum,s) => sum + s.bal, 0);
+    let baseMargin = parseFloat(document.getElementById("margin").value) || 0;
+    let dynamicMargin = baseMargin;
+    maxMarginSeen = baseMargin;
+    let calendar = new Date();
+    let totalMonths = 0;
+    let loopSafety = 0;
+
+    let bodyHTML = "";
+    ledgerRows = [];
+    chartDataPoints = [];
+    halfwayInfo = null;
+    firstPaidInfo = null;
+    finalInfo = null;
+
+    let debtsPaidCount = 0;
+
+    while(sim.some(s => s.bal > 0) && loopSafety < 300){
+        loopSafety++;
+        totalMonths++;
+        calendar.setMonth(calendar.getMonth() + 1);
+
+        const monthLabel = mNames[calendar.getMonth()] + " " + calendar.getFullYear();
+
+        let activeDebtName = "";
+        let activeDebtMin = 0;
+        let activeDebtJustPaid = false;
+
+        for(let i = 0; i < sim.length; i++){
+            if(sim[i].bal > 0){
+                activeDebtName = sim[i].name;
+                activeDebtMin = sim[i].min;
+                break;
+            }
+        }
+
+        let remainingSnowball = dynamicMargin;
+        let grandRemainingTotal = 0;
+        let totalMonthlyPayment = 0;
+
+        for(let i = 0; i < sim.length; i++){
+            const s = sim[i];
+
+            if(s.bal > 0 && s.type === "revolving"){
+                s.bal += (s.bal * ((s.apr / 100) / 12));
+            }
+
+            if(s.name === activeDebtName){
+                let fullPay = s.min + remainingSnowball;
+                totalMonthlyPayment += fullPay;
+
+                if(fullPay >= s.bal){
+                    const overpay = fullPay - s.bal;
+                    s.bal = 0;
+                    dynamicMargin += s.min;
+                    remainingSnowball = overpay;
+                    activeDebtJustPaid = true;
+                    debtsPaidCount++;
+
+                    if(!firstPaidInfo){
+                        firstPaidInfo = {
+                            month: monthLabel,
+                            debtsPaid: debtsPaidCount
+                        };
+                    }
+                } else {
+                    s.bal -= fullPay;
+                    remainingSnowball = 0;
+                }
+            } else if(s.bal > 0){
+                totalMonthlyPayment += s.min;
+            }
+
+            grandRemainingTotal += s.bal;
+        }
+
+        if(dynamicMargin > maxMarginSeen) maxMarginSeen = dynamicMargin;
+
+        if(initialTotalDebt > 0 && !halfwayInfo && grandRemainingTotal <= initialTotalDebt / 2){
+            const debtsEliminated = sim.filter(s => s.bal === 0).length;
+            halfwayInfo = {
+                month: monthLabel,
+                margin: dynamicMargin.toFixed(2),
+                debtsEliminated: debtsEliminated
+            };
+        }
+
+        ledgerRows.push({
+            month: monthLabel,
+            activeDebt: (activeDebtName || "-") + (activeDebtJustPaid ? " (PAID OFF)" : ""),
+            margin: dynamicMargin.toFixed(2),
+            payment: activeDebtMin.toFixed(2),
+            totalPayment: totalMonthlyPayment.toFixed(2),
+            totalRemaining: grandRemainingTotal.toFixed(2)
+        });
+
+        bodyHTML +=
+            "<tr>" +
+            "<td>" + monthLabel + "</td>" +
+            "<td>" + (activeDebtName || "-") +
+            (activeDebtJustPaid ? " <span style='color:#10B981;font-weight:bold;'>(PAID OFF)</span>" : "") +
+            "</td>" +
+            "<td>$" + dynamicMargin.toFixed(2) + "</td>" +
+            "<td>$" + activeDebtMin.toFixed(2) + "</td>" +
+            "<td>$" + totalMonthlyPayment.toFixed(2) + "</td>" +
+            "<td>$" + grandRemainingTotal.toFixed(2) + "</td>" +
+            "</tr>";
+
+        chartDataPoints.push({
+            label: monthLabel,
+            remaining: grandRemainingTotal
+        });
+
+        finalInfo = {
+            month: monthLabel,
+            margin: dynamicMargin.toFixed(2),
+            debtsPaid: debtsPaidCount
+        };
+    }
+
+    chartDataPoints.push({
+        label: "Final",
+        remaining: 0
+    });
+
+    document.getElementById("tbOut").innerHTML = bodyHTML;
+
+    const endDate = mNames[calendar.getMonth()] + " " + calendar.getFullYear();
+    document.getElementById("dateOut").innerText = endDate;
+    document.getElementById("countOut").innerText = totalMonths + " months until debt freedom";
+
+    const halfwayCard = document.getElementById("halfwayCard");
+    const halfwayText = document.getElementById("halfwayText");
+    if(halfwayInfo){
+        halfwayCard.style.display = "block";
+        halfwayText.innerText =
+            `You reach the halfway point around ${halfwayInfo.month}. ` +
+            `By then, your margin is about $${halfwayInfo.margin}/month ` +
+            `and you’ve eliminated ${halfwayInfo.debtsEliminated} debt(s). Keep going — you’re closer than you think.`;
+    } else {
+        halfwayCard.style.display = "block";
+        halfwayText.innerText =
+            "Your halfway point will appear here once the payoff timeline is long enough to cross 50% reduction.";
+    }
+
+    setTimeout(() => {
+        if(showChartFlag) {
+            renderChart();
+        }
+    }, 50);
+}
+
+function renderChart(){
+    if(chartDataPoints.length === 0){
+        if(payoffChart){
+            payoffChart.destroy();
+            payoffChart = null;
+        }
+        return;
+    }
+
+    const ctx = document.getElementById("payoffChart").getContext("2d");
+    if(payoffChart) payoffChart.destroy();
+
+    payoffChart = new Chart(ctx,{
+        type:'line',
+        data:{
+            labels: chartDataPoints.map(p => p.label),
+            datasets:[{
+                label:'Total Debt Remaining',
+                data: chartDataPoints.map(p => p.remaining),
+                borderColor:'#1E3A8A',
+                backgroundColor:'rgba(59,130,246,0.15)',
+                tension:0.25,
+                fill:true
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            scales:{ y:{beginAtZero:true} }
+        }
+    });
+}
+
+/* Income + Household Snapshot */
+function updateIncomeCard(){
+    const incomeVal = parseFloat(document.getElementById("netIncome").value) || 0;
+    const foodVal = parseFloat(document.getElementById("foodExp").value) || 0;
+    const utilVal = parseFloat(document.getElementById("utilExp").value) || 0;
+    const memberVal = parseFloat(document.getElementById("memberExp").value) || 0;
+    const insVal = parseFloat(document.getElementById("insExp").value) || 0;
+    const subsVal = parseFloat(document.getElementById("subsExp").value) || 0;
+    const otherVal = parseFloat(document.getElementById("otherExp").value) || 0;
+
+    const incomeSummary = document.getElementById("incomeSummary");
+
+    const totalMin = debts.reduce((sum,d) => sum + d.min, 0);
+    const marginVal = parseFloat(document.getElementById("margin").value) || 0;
+
+    const totalHousehold = foodVal + utilVal + memberVal + insVal + subsVal + otherVal;
+
+    if(incomeVal <= 0){
+        incomeSummary.innerText = "Enter your income and household expenses to see your financial picture.";
+        if(incomeChart){
+            incomeChart.destroy();
+            incomeChart = null;
+        }
+        updateDTIGauge(0,0);
+        return;
+    }
+
+    const debtPortion = totalMin;
+    const expensePortion = totalHousehold;
+    const remainingIncome = Math.max(incomeVal - debtPortion - expensePortion, 0);
+
+    const dti = incomeVal > 0 ? (debtPortion / incomeVal) * 100 : 0;
+    const eti = incomeVal > 0 ? (expensePortion / incomeVal) * 100 : 0;
+    const mti = incomeVal > 0 ? (marginVal / incomeVal) * 100 : 0;
+
+    incomeSummary.innerText =
+        `Debt uses about ${dti.toFixed(1)}% of income. ` +
+        `Household expenses use about ${eti.toFixed(1)}%. ` +
+        `Margin is ${mti.toFixed(1)}%. Remaining free income: $${remainingIncome.toFixed(2)}.`;
+
+    updateDTIGauge(dti,36);
+
+    const ctx = document.getElementById("incomeChart").getContext("2d");
+    if(incomeChart) incomeChart.destroy();
+
+    incomeChart = new Chart(ctx,{
+        type:'pie',
+        data:{
+            labels:["Debt Payments","Household Expenses","Remaining Income"],
+            datasets:[{
+                data:[debtPortion, expensePortion, remainingIncome],
+                backgroundColor:["#F97373","#3B82F6","#10B981"],
+                borderColor:["#ffffff","#ffffff","#ffffff"],
+                borderWidth:2
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{
+                legend:{position:"bottom"}
+            }
+        }
+    });
+}
+
+/* DTI Gauge */
+function updateDTIGauge(dti,target){
+    const fill = document.getElementById("dtiGaugeFill");
+    const center = document.getElementById("dtiGaugeCenter");
+    const text = document.getElementById("dtiText");
+
+    if(dti <= 0){
+        fill.style.transform = "rotate(0deg)";
+        center.innerText = "DTI";
+        text.innerText = "DTI will appear once income and debts are entered.";
+        return;
+    }
+
+    const pct = Math.min(dti / 100,1);
+    const deg = pct * 180;
+    fill.style.transform = `rotate(${deg}deg)`;
+    center.innerText = dti.toFixed(1) + "%";
+
+    if(dti <= target){
+        text.innerText = `Your DTI is ${dti.toFixed(1)}%, at or below the target ${target}%. Strong position.`;
+    } else {
+        text.innerText = `Your DTI is ${dti.toFixed(1)}%. As debts fall, this will move closer to the ${target}% target.`;
+    }
+}
+
+/* Momentum Meter – uses actual margin input */
+function updateMomentumMeter(){
+    const text = document.getElementById("momentumText");
+    const fill = document.getElementById("momentumFill");
+
+    const baseMargin = parseFloat(document.getElementById("margin").value) || 0;
+
+    if(baseMargin <= 0){
+        text.innerText = "Enter a positive margin to see your momentum.";
+        fill.style.width = "0%";
+        return;
+    }
+
+    const currentMargin = baseMargin;
+
+    fill.style.width = "100%";
+
+    text.innerText =
+        `Current margin: $${currentMargin.toFixed(2)} per month. ` +
+        `As you eliminate debts in real life, this margin will grow and your momentum will increase.`;
+}
+
+/* Trophy Counter – uses real paid-off debts only */
+function updateTrophy(){
+    const text = document.getElementById("trophyText");
+
+    const debtsPaid = debts.filter(d => d.balance <= 0).length;
+    const baseMargin = parseFloat(document.getElementById("margin").value) || 0;
+
+    if(debtsPaid === 0){
+        text.innerText =
+            "🏆 No debts eliminated yet. Once you pay off a debt in real life, " +
+            "this section will track your wins.";
+        return;
+    }
+
+    text.innerText =
+        `🏆 ${debtsPaid} debt(s) eliminated so far. ` +
+        `🔥 Momentum increasing. ` +
+        `💰 Current margin: $${baseMargin.toFixed(2)}/month.`;
+}
+
+/* Future You Projection */
+function updateFutureYou(){
+    const text = document.getElementById("futureText");
+
+    if(!finalInfo){
+        text.innerText =
+            "As you add debts and run the calculator, we’ll show when you’re debt-free and how much margin you’ll have.";
+        return;
+    }
+
+    text.innerText =
+        `If you stay consistent, by around ${finalInfo.month} you’ll be debt-free with about ` +
+        `$${finalInfo.margin}/month in free margin. That’s your future debt-free lifestyle.`;
+}
+
+/* Journey Timeline */
+function updateJourneyTimeline(){
+    const startLabel = document.getElementById("tlStartLabel");
+    const firstLabel = document.getElementById("tlFirstLabel");
+    const halfLabel = document.getElementById("tlHalfLabel");
+    const endLabel = document.getElementById("tlEndLabel");
+
+    if(ledgerRows.length === 0){
+        startLabel.innerText = "Start";
+        firstLabel.innerText = "First Debt Paid";
+        halfLabel.innerText = "Halfway";
+        endLabel.innerText = "Debt-Free";
+        return;
+    }
+
+    startLabel.innerText = ledgerRows[0].month;
+
+    firstLabel.innerText = firstPaidInfo
+        ? firstPaidInfo.month
+        : "Pending";
+
+    halfLabel.innerText = halfwayInfo
+        ? halfwayInfo.month
+        : "Pending";
+
+    endLabel.innerText = ledgerRows[ledgerRows.length - 1].month;
+}
+
+/* CSV Download */
+function downloadCSV(){
+    if(ledgerRows.length === 0){
+        alert("No ledger data available yet. Add debts and run the calculator first.");
+        return;
+    }
+
+    let headers = ["Month","Active Debt","Margin","Payment","Total Payment","Total Remaining"];
+    let csv = headers.join(",") + "\n";
+
+    ledgerRows.forEach(row => {
+        let line = [
+            row.month,
+            row.activeDebt,
+            row.margin,
+            row.payment,
+            row.totalPayment,
+            row.totalRemaining
+        ];
+        csv += line.join(",") + "\n";
+    });
+
+    const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href",url);
+    link.setAttribute("download","no_excuse_snowball_ledger.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
