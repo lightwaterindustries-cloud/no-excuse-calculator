@@ -731,12 +731,7 @@ canvas{
                     <p id="trophyText">🏆 No debts eliminated yet. Once you start, this will track your wins.</p>
                 </div>
 
-                <div class="metric-card">
-                    <h4>Future You Projection</h4>
-                    <p class="future-text" id="futureText">
-                        As you add debts and run the calculator, we’ll show when you’re debt-free and how much margin you’ll have.
-                    </p>
-                </div>
+
             </div>
         </div>
     </div>
@@ -752,9 +747,9 @@ canvas{
                     <th>Month</th>
                     <th>Active Debt</th>
                     <th>Margin</th>
-                    <th>Payment</th>
-                    <th>Total Payment</th>
-                    <th>Total Remaining</th>
+                    <th>Minimum</th>
+<th>Attack Payment</th>
+<th>Remaining Balance</th>
                 </tr>
             </thead>
             <tbody id="tbOut">
@@ -1021,13 +1016,19 @@ function calculateProjections(){
             }
 
             if(s.name === activeDebtName){
-                let fullPay = s.min + remainingSnowball;
+                let attackPayment =
+    dynamicMargin + s.min;
+    
+    
+
+let fullPay =
+    attackPayment;
                 totalMonthlyPayment += fullPay;
 
                 if(fullPay >= s.bal){
                     const overpay = fullPay - s.bal;
                     s.bal = 0;
-                    dynamicMargin += s.min;
+                    dynamicMargin = attackPayment;
                     remainingSnowball = overpay;
                     activeDebtJustPaid = true;
                     debtsPaidCount++;
@@ -1065,8 +1066,9 @@ function calculateProjections(){
             activeDebt: (activeDebtName || "-") + (activeDebtJustPaid ? " (PAID OFF)" : ""),
             margin: dynamicMargin.toFixed(2),
             payment: activeDebtMin.toFixed(2),
-            totalPayment: totalMonthlyPayment.toFixed(2),
-            totalRemaining: grandRemainingTotal.toFixed(2)
+            totalPayment: (dynamicMargin + activeDebtMin).toFixed(2),
+            totalRemaining:
+    sim.find(x => x.name === activeDebtName)?.bal.toFixed(2) || "0.00",
         });
 
         bodyHTML +=
@@ -1077,8 +1079,8 @@ function calculateProjections(){
             "</td>" +
             "<td>$" + dynamicMargin.toFixed(2) + "</td>" +
             "<td>$" + activeDebtMin.toFixed(2) + "</td>" +
-            "<td>$" + totalMonthlyPayment.toFixed(2) + "</td>" +
-            "<td>$" + grandRemainingTotal.toFixed(2) + "</td>" +
+         "<td>$" + (dynamicMargin + activeDebtMin).toFixed(2) + "</td>" +
+"<td>$" + (sim.find(x => x.name === activeDebtName)?.bal.toFixed(2) || "0.00") + "</td>" +
             "</tr>";
 
         chartDataPoints.push({
@@ -1189,7 +1191,9 @@ function updateIncomeCard(){
     const expensePortion = totalHousehold;
     const remainingIncome = Math.max(incomeVal - debtPortion - expensePortion, 0);
 
-    const dti = incomeVal > 0 ? (debtPortion / incomeVal) * 100 : 0;
+    const dti = incomeVal > 0
+    ? ((debtPortion + expensePortion) / incomeVal) * 100
+    : 0;
     const eti = incomeVal > 0 ? (expensePortion / incomeVal) * 100 : 0;
     const mti = incomeVal > 0 ? (marginVal / incomeVal) * 100 : 0;
 
@@ -1273,23 +1277,22 @@ function updateMomentumMeter(){
 
 /* Trophy Counter – uses real paid-off debts only */
 function updateTrophy(){
-    const text = document.getElementById("trophyText");
 
-    const debtsPaid = debts.filter(d => d.balance <= 0).length;
-    const baseMargin = parseFloat(document.getElementById("margin").value) || 0;
+    const text =
+        document.getElementById("trophyText");
 
-    if(debtsPaid === 0){
+    if(!firstPaidInfo){
+
         text.innerText =
-            "🏆 No debts eliminated yet. Once you pay off a debt in real life, " +
-            "this section will track your wins.";
+            "🏆 No debts eliminated yet. Once you begin knocking out balances, your victories will appear here.";
+
         return;
     }
 
     text.innerText =
-        `🏆 ${debtsPaid} debt(s) eliminated so far. ` +
-        `🔥 Momentum increasing. ` +
-        `💰 Current margin: $${baseMargin.toFixed(2)}/month.`;
+        `🏆 ${firstPaidInfo.debtsPaid} debt(s) eliminated in your payoff plan. Keep building momentum.`;
 }
+
 
 /* Future You Projection */
 function updateFutureYou(){
