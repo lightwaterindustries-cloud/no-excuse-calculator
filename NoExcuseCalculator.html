@@ -648,11 +648,20 @@ canvas{
         <label for="bal">Current Balance ($)</label>
         <input type="number" id="bal">
 
-        <label for="min">Minimum Monthly Payment ($)</label>
+<label for="min">
+    Minimum Monthly Payment ($)
+</label>
+
+<span id="mortgageNote" style="display:none;font-size:10px;color:#b54708;margin-top:4px;margin-bottom:8px;line-height:1.2;">
+    Please Note: For mortgage debt, enter only the monthly principal payment amount, NOT the full P.I.T.I. payment (Principal, Interest, Taxes, Insurance).
+</span>
+
         <input type="number" id="min">
 
-        <label for="apr">Annual Interest Rate (APR %)</label>
-        <input type="number" id="apr">
+
+<label for="apr">Annual Interest Rate (APR %)</label>
+<input type="number" id="apr">
+        
 
         <label for="type">Debt Type</label>
         <select id="type">
@@ -726,10 +735,7 @@ canvas{
                     </div>
                 </div>
 
-                <div class="metric-card">
-                    <h4>Debts Eliminated Trophy</h4>
-                    <p id="trophyText">🏆 No debts eliminated yet. Once you start, this will track your wins.</p>
-                </div>
+             
 
 
             </div>
@@ -889,7 +895,7 @@ function runEngine(){
         updateIncomeCard();
         updateJourneyTimeline();
         updateMomentumMeter();
-        updateTrophy();
+        
         updateFutureYou();
         return;
     }
@@ -1074,13 +1080,17 @@ let fullPay =
         bodyHTML +=
             "<tr>" +
             "<td>" + monthLabel + "</td>" +
-            "<td>" + (activeDebtName || "-") +
-            (activeDebtJustPaid ? " <span style='color:#10B981;font-weight:bold;'>(PAID OFF)</span>" : "") +
-            "</td>" +
+         "<td>" + (activeDebtName || "-") +
+(
+    activeDebtJustPaid
+        ? " <span style='color:#10B981;font-weight:bold;'>🏆 PAID OFF</span>"
+        : ""
+) +
+"</td>" +
             "<td>$" + dynamicMargin.toFixed(2) + "</td>" +
             "<td>$" + activeDebtMin.toFixed(2) + "</td>" +
          "<td>$" + (dynamicMargin + activeDebtMin).toFixed(2) + "</td>" +
-"<td>$" + (sim.find(x => x.name === activeDebtName)?.bal.toFixed(2) || "0.00") + "</td>" +
+"<td>$" + ((sim.find(x => x.name === activeDebtName)?.bal ?? 0).toFixed(2)) + "</td>" +
             "</tr>";
 
         chartDataPoints.push({
@@ -1276,22 +1286,7 @@ function updateMomentumMeter(){
 }
 
 /* Trophy Counter – uses real paid-off debts only */
-function updateTrophy(){
 
-    const text =
-        document.getElementById("trophyText");
-
-    if(!firstPaidInfo){
-
-        text.innerText =
-            "🏆 No debts eliminated yet. Once you begin knocking out balances, your victories will appear here.";
-
-        return;
-    }
-
-    text.innerText =
-        `🏆 ${firstPaidInfo.debtsPaid} debt(s) eliminated in your payoff plan. Keep building momentum.`;
-}
 
 
 /* Future You Projection */
@@ -1369,6 +1364,26 @@ function downloadCSV(){
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
+
+
+document.getElementById("category").addEventListener("change", function () {
+
+    const mortgageNote =
+        document.getElementById("mortgageNote");
+
+    if (this.value === "Mortgage") {
+
+        mortgageNote.style.display = "block";
+
+    } else {
+
+        mortgageNote.style.display = "none";
+    }
+});
+
+document.getElementById("category").dispatchEvent(
+    new Event("change")
+);
 </script>
 
 </body>
